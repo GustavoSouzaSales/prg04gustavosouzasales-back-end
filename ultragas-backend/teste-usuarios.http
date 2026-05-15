@@ -1,0 +1,26 @@
+### Cadastrar usuário
+POST http://localhost:8080/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Jonatas",
+  "email": "jonatas@email.com"
+}
+
+
+### Listar usuários
+GET http://localhost:8080/usuarios
+
+
+### Atualizar usuário
+PUT http://localhost:8080/usuarios/1
+Content-Type: application/json
+
+{
+  "nome": "Jonatas Atualizado",
+  "email": "jonatasnovo@email.com"
+}
+
+
+### Deletar usuário
+DELETE http://localhost:8080/usuarios/1
