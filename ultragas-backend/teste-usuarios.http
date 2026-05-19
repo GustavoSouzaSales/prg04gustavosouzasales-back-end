@@ -3,24 +3,26 @@ POST http://localhost:8080/usuarios
 Content-Type: application/json
 
 {
-  "nome": "Jonatas",
-  "email": "jonatas@email.com"
+  "nome": "MisaelNovo",
+  "email": "jonatass@email.com"
 }
 
 
 ### Listar usuários
 GET http://localhost:8080/usuarios
 
+### Buscar usuário por ID
+GET http://localhost:8080/usuarios/1
 
 ### Atualizar usuário
-PUT http://localhost:8080/usuarios/1
+PUT http://localhost:8080/usuarios/3
 Content-Type: application/json
 
 {
-  "nome": "Jonatas Atualizado",
+  "nome": "Misael Atualizado",
   "email": "jonatasnovo@email.com"
 }
 
 
 ### Deletar usuário
-DELETE http://localhost:8080/usuarios/1
+DELETE http://localhost:8080/usuarios/2

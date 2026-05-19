@@ -33,6 +33,12 @@ public class UsuarioController {
         return service.salvarUsuario(usuario);
     }
 
+    // Busca usuário por Id
+    @GetMapping("/{id}")
+    public Usuario buscarUsuarioPorId(@PathVariable Long id) {
+        return service.buscarUsuarioPorId(id);
+    }
+
     // Atualiza os dados de um usuário existente
     @PutMapping("/{id}")
     public Usuario atualizarUsuario(

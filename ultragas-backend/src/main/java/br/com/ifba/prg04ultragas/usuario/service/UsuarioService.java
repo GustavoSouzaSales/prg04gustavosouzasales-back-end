@@ -20,6 +20,11 @@ public class UsuarioService {
         return repository.findAll();
     }
 
+    // Busca usuário por Id
+    public Usuario buscarUsuarioPorId(Long id) {
+        return repository.findById(id).orElseThrow();
+    }
+
     // Salva um novo usuário
     public Usuario salvarUsuario(Usuario usuario) {
 
