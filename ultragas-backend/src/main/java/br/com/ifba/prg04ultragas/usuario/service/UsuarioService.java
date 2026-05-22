@@ -1,5 +1,8 @@
 package br.com.ifba.prg04ultragas.usuario.service;
 
+import br.com.ifba.prg04ultragas.infrastructure.mapper.ObjectMapperUtil;
+import br.com.ifba.prg04ultragas.usuario.dto.UsuarioRequestDTO;
+import br.com.ifba.prg04ultragas.usuario.dto.UsuarioResponseDTO;
 import br.com.ifba.prg04ultragas.usuario.model.Usuario;
 import br.com.ifba.prg04ultragas.usuario.repository.UsuarioRepository;
 
@@ -7,45 +10,81 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import br.com.ifba.prg04ultragas.infrastructure.exception.BusinessException;
 
-@Service // Define essa classe como camada de serviço
+@Service
 public class UsuarioService {
 
     @Autowired
     private UsuarioRepository repository;
 
-    // Busca todos os usuários no banco
-    public List<Usuario> listarUsuarios() {
+    @Autowired
+    private ObjectMapperUtil mapper;
 
-        return repository.findAll();
+    // Lista todos os usuários
+    public List<UsuarioResponseDTO> listarUsuarios() {
+
+        List<Usuario> usuarios = repository.findAll();
+
+        return mapper.mapAll(
+                usuarios,
+                UsuarioResponseDTO.class
+        );
     }
 
-    // Busca usuário por Id
-    public Usuario buscarUsuarioPorId(Long id) {
-        return repository.findById(id).orElseThrow();
+    // Busca usuário por ID
+    public UsuarioResponseDTO buscarUsuarioPorId(Long id) {
+
+        Usuario usuario = repository.findById(id)
+                .orElseThrow(() ->
+                        new BusinessException("Usuário não encontrado"));
+
+        return mapper.map(
+                usuario,
+                UsuarioResponseDTO.class
+        );
     }
 
-    // Salva um novo usuário
-    public Usuario salvarUsuario(Usuario usuario) {
+    // Salva usuário
+    public UsuarioResponseDTO salvarUsuario(
+            UsuarioRequestDTO dto
+    ) {
 
-        return repository.save(usuario);
+        Usuario usuario = mapper.map(
+                dto,
+                Usuario.class
+        );
+
+        usuario = repository.save(usuario);
+
+        return mapper.map(
+                usuario,
+                UsuarioResponseDTO.class
+        );
     }
 
-    // Atualiza os dados de um usuário existente
-    public Usuario atualizarUsuario(Long id, Usuario usuarioAtualizado) {
+    // Atualiza usuário
+    public UsuarioResponseDTO atualizarUsuario(
+            Long id,
+            UsuarioRequestDTO dto
+    ) {
 
-        // Procura o usuário pelo ID
-        Usuario usuario = repository.findById(id).orElseThrow();
+        Usuario usuario = repository.findById(id)
+                .orElseThrow(() ->
+                        new BusinessException("Usuário não encontrado"));
 
-        // Atualiza os dados
-        usuario.setNome(usuarioAtualizado.getNome());
-        usuario.setEmail(usuarioAtualizado.getEmail());
+        usuario.setNome(dto.getNome());
+        usuario.setEmail(dto.getEmail());
 
-        // Salva novamente no banco
-        return repository.save(usuario);
+        usuario = repository.save(usuario);
+
+        return mapper.map(
+                usuario,
+                UsuarioResponseDTO.class
+        );
     }
 
-    // Remove um usuário pelo ID
+    // Remove usuário
     public void deletarUsuario(Long id) {
 
         repository.deleteById(id);

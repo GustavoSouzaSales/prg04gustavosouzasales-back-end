@@ -1,6 +1,7 @@
 package br.com.ifba.prg04ultragas.usuario.controller;
 
-import br.com.ifba.prg04ultragas.usuario.model.Usuario;
+import br.com.ifba.prg04ultragas.usuario.dto.UsuarioRequestDTO;
+import br.com.ifba.prg04ultragas.usuario.dto.UsuarioResponseDTO;
 import br.com.ifba.prg04ultragas.usuario.service.UsuarioService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,32 +22,37 @@ public class UsuarioController {
 
     // Lista todos os usuários cadastrados
     @GetMapping
-    public List<Usuario> listarUsuarios() {
+    public List<UsuarioResponseDTO> listarUsuarios() {
 
         return service.listarUsuarios();
     }
 
     // Salva um novo usuário no banco
     @PostMapping
-    public Usuario salvarUsuario(@RequestBody Usuario usuario) {
+    public UsuarioResponseDTO salvarUsuario(
+            @RequestBody UsuarioRequestDTO dto
+    ) {
 
-        return service.salvarUsuario(usuario);
+        return service.salvarUsuario(dto);
     }
 
-    // Busca usuário por Id
+    // Busca usuário por ID
     @GetMapping("/{id}")
-    public Usuario buscarUsuarioPorId(@PathVariable Long id) {
+    public UsuarioResponseDTO buscarUsuarioPorId(
+            @PathVariable Long id
+    ) {
+
         return service.buscarUsuarioPorId(id);
     }
 
     // Atualiza os dados de um usuário existente
     @PutMapping("/{id}")
-    public Usuario atualizarUsuario(
+    public UsuarioResponseDTO atualizarUsuario(
             @PathVariable Long id,
-            @RequestBody Usuario usuario
+            @RequestBody UsuarioRequestDTO dto
     ) {
 
-        return service.atualizarUsuario(id, usuario);
+        return service.atualizarUsuario(id, dto);
     }
 
     // Remove um usuário pelo ID
