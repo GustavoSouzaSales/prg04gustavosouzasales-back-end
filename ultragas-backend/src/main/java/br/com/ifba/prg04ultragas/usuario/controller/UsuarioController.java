@@ -4,15 +4,15 @@ import br.com.ifba.prg04ultragas.usuario.dto.UsuarioRequestDTO;
 import br.com.ifba.prg04ultragas.usuario.dto.UsuarioResponseDTO;
 import br.com.ifba.prg04ultragas.usuario.service.UsuarioService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController // Define essa classe como controller REST
-
 @RequestMapping("/usuarios") // Caminho principal da API
-
 @CrossOrigin("*") // Permite conexão com o frontend
 
 public class UsuarioController {
@@ -30,7 +30,7 @@ public class UsuarioController {
     // Salva um novo usuário no banco
     @PostMapping
     public UsuarioResponseDTO salvarUsuario(
-            @RequestBody UsuarioRequestDTO dto
+            @RequestBody @Valid UsuarioRequestDTO dto
     ) {
 
         return service.salvarUsuario(dto);
@@ -49,7 +49,7 @@ public class UsuarioController {
     @PutMapping("/{id}")
     public UsuarioResponseDTO atualizarUsuario(
             @PathVariable Long id,
-            @RequestBody UsuarioRequestDTO dto
+            @RequestBody @Valid UsuarioRequestDTO dto
     ) {
 
         return service.atualizarUsuario(id, dto);

@@ -1,16 +1,18 @@
 package br.com.ifba.prg04ultragas.usuario.service;
 
+import br.com.ifba.prg04ultragas.infrastructure.exception.BusinessException;
 import br.com.ifba.prg04ultragas.infrastructure.mapper.ObjectMapperUtil;
 import br.com.ifba.prg04ultragas.usuario.dto.UsuarioRequestDTO;
 import br.com.ifba.prg04ultragas.usuario.dto.UsuarioResponseDTO;
 import br.com.ifba.prg04ultragas.usuario.model.Usuario;
 import br.com.ifba.prg04ultragas.usuario.repository.UsuarioRepository;
 
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import br.com.ifba.prg04ultragas.infrastructure.exception.BusinessException;
 
 @Service
 public class UsuarioService {
@@ -46,6 +48,7 @@ public class UsuarioService {
     }
 
     // Salva usuário
+    @Transactional
     public UsuarioResponseDTO salvarUsuario(
             UsuarioRequestDTO dto
     ) {
@@ -64,6 +67,7 @@ public class UsuarioService {
     }
 
     // Atualiza usuário
+    @Transactional
     public UsuarioResponseDTO atualizarUsuario(
             Long id,
             UsuarioRequestDTO dto
@@ -85,8 +89,13 @@ public class UsuarioService {
     }
 
     // Remove usuário
+    @Transactional
     public void deletarUsuario(Long id) {
 
-        repository.deleteById(id);
+        Usuario usuario = repository.findById(id)
+                .orElseThrow(() ->
+                        new BusinessException("Usuário não encontrado"));
+
+        repository.delete(usuario);
     }
 }
