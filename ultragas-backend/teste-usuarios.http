@@ -1,10 +1,37 @@
-### Cadastrar usuário
+### Cadastrar usuário 1
 POST http://localhost:8080/usuarios
 Content-Type: application/json
 
 {
   "nome": "MisaelNovo",
   "email": "jonatass@email.com"
+}
+
+### Cadastrar usuário 2
+POST http://localhost:8080/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Jonatas",
+  "email": "jonatas@email.com"
+}
+
+### Cadastrar usuário 3
+POST http://localhost:8080/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Gustavo",
+  "email": "gustavo@email.com"
+}
+
+### Cadastrar usuário 4
+POST http://localhost:8080/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Ana",
+  "email": "ana@email.com"
 }
 
 
@@ -17,11 +44,17 @@ Content-Type: application/json
   "email": "emailerrado"
 }
 
-### Listar usuários
-GET http://localhost:8080/usuarios
+
+### Listar usuários paginado
+GET http://localhost:8080/usuarios?page=0&size=3
+
+
+### Listar segunda página
+GET http://localhost:8080/usuarios?page=1&size=3
 
 ### Buscar usuário por ID
 GET http://localhost:8080/usuarios/1
+
 
 ### Atualizar usuário
 PUT http://localhost:8080/usuarios/1
@@ -35,3 +68,6 @@ Content-Type: application/json
 
 ### Deletar usuário
 DELETE http://localhost:8080/usuarios/1
+
+### Buscar CEP
+GET http://localhost:8080/cep/44905000

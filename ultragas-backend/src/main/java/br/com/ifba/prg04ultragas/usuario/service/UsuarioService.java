@@ -6,13 +6,13 @@ import br.com.ifba.prg04ultragas.usuario.dto.UsuarioRequestDTO;
 import br.com.ifba.prg04ultragas.usuario.dto.UsuarioResponseDTO;
 import br.com.ifba.prg04ultragas.usuario.model.Usuario;
 import br.com.ifba.prg04ultragas.usuario.repository.UsuarioRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UsuarioService {
@@ -23,14 +23,15 @@ public class UsuarioService {
     @Autowired
     private ObjectMapperUtil mapper;
 
-    // Lista todos os usuários
-    public List<UsuarioResponseDTO> listarUsuarios() {
+    // Lista todos os usuários com paginação
+    public Page<UsuarioResponseDTO> listarUsuarios(
+            Pageable pageable
+    ) {
 
-        List<Usuario> usuarios = repository.findAll();
+        Page<Usuario> usuarios = repository.findAll(pageable);
 
-        return mapper.mapAll(
-                usuarios,
-                UsuarioResponseDTO.class
+        return usuarios.map(usuario ->
+                mapper.map(usuario, UsuarioResponseDTO.class)
         );
     }
 

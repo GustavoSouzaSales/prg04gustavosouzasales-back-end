@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 
 @RestController // Define essa classe como controller REST
 @RequestMapping("/usuarios") // Caminho principal da API
@@ -20,11 +23,13 @@ public class UsuarioController {
     @Autowired
     private UsuarioService service;
 
-    // Lista todos os usuários cadastrados
+    // Lista todos os usuários cadastrados com paginação
     @GetMapping
-    public List<UsuarioResponseDTO> listarUsuarios() {
+    public Page<UsuarioResponseDTO> listarUsuarios(
+            Pageable pageable
+    ) {
 
-        return service.listarUsuarios();
+        return service.listarUsuarios(pageable);
     }
 
     // Salva um novo usuário no banco
