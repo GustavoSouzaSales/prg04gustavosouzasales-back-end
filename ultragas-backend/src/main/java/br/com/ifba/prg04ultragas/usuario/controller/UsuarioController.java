@@ -3,13 +3,13 @@ package br.com.ifba.prg04ultragas.usuario.controller;
 import br.com.ifba.prg04ultragas.usuario.dto.UsuarioRequestDTO;
 import br.com.ifba.prg04ultragas.usuario.dto.UsuarioResponseDTO;
 import br.com.ifba.prg04ultragas.usuario.service.UsuarioService;
+import br.com.ifba.prg04ultragas.usuario.dto.UsuarioUpdateDTO;
 
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -54,7 +54,7 @@ public class UsuarioController {
     @PutMapping("/{id}")
     public UsuarioResponseDTO atualizarUsuario(
             @PathVariable Long id,
-            @RequestBody @Valid UsuarioRequestDTO dto
+            @RequestBody @Valid UsuarioUpdateDTO dto
     ) {
 
         return service.atualizarUsuario(id, dto);

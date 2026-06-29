@@ -7,12 +7,15 @@ import lombok.Setter;
 @Setter
 public class UsuarioResponseDTO {
 
-    // ID retornado na resposta
     private Long id;
 
-    // Nome retornado na resposta
     private String nome;
 
-    // Email retornado na resposta
     private String email;
+
+    private String telefone;
+
+    private String status;
+
+    private String tipoUsuario;
 }

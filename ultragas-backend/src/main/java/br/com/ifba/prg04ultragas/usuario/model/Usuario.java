@@ -1,32 +1,29 @@
 package br.com.ifba.prg04ultragas.usuario.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.*;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-
-@Entity // Define essa classe como entidade do banco
-
+@Entity
 @Getter
 @Setter
-
-@NoArgsConstructor // Cria construtor vazio automaticamente
-@AllArgsConstructor // Cria construtor com todos os atributos
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class Usuario {
 
-    @Id // Define o ID da entidade
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Gera IDs automáticos
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Nome do usuário
     private String nome;
 
-    // Email do usuário
+    @Column(unique = true)
     private String email;
+
+    private String telefone;
+
+    private String senha;
+
+    private String status; // Ativo, Pendente, Inativo
+
+    private String tipoUsuario; // CLIENTE ou ADMINISTRADOR
 }

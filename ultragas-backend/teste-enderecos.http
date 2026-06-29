@@ -1,0 +1,44 @@
+### Cadastrar endereço
+POST http://localhost:8080/enderecos
+Content-Type: application/json
+
+{
+  "titulo": "Casa",
+  "cep": "44900-000",
+  "endereco": "Rua Principal",
+  "numero": "45",
+  "bairro": "Centro",
+  "cidade": "Irecê",
+  "uf": "BA",
+  "principal": false,
+  "usuarioId": 1
+}
+
+### Listar endereços
+GET http://localhost:8080/enderecos?page=0&size=10
+
+### Buscar endereço
+GET http://localhost:8080/enderecos/1
+
+### Atualizar endereço
+PUT http://localhost:8080/enderecos/1
+Content-Type: application/json
+
+{
+  "titulo": "Trabalho",
+  "cep": "44900-000",
+  "endereco": "Rua Nova",
+  "numero": "100",
+  "bairro": "Centro",
+  "cidade": "Irecê",
+  "uf": "BA",
+  "principal": false,
+  "usuarioId": 1
+}
+
+### Deletar endereço
+DELETE http://localhost:8080/enderecos/1
+
+###
+
+GET http://localhost:8080/enderecos/usuario/1?page=0&size=100

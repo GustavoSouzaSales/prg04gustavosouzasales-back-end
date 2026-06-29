@@ -3,8 +3,10 @@ POST http://localhost:8080/usuarios
 Content-Type: application/json
 
 {
-  "nome": "MisaelNovo",
-  "email": "jonatass@email.com"
+  "nome": "Gustavo",
+  "email": "gustavo@gmail.com",
+  "senha": "gustavo123",
+  "status": "Ativo"
 }
 
 ### Cadastrar usuário 2
@@ -12,8 +14,11 @@ POST http://localhost:8080/usuarios
 Content-Type: application/json
 
 {
-  "nome": "Jonatas",
-  "email": "jonatas@email.com"
+  "nome": "Administrador",
+  "email": "admin@gmail.com",
+  "senha": "12345678",
+  "status": "Ativo",
+  "tipoUsuario": "ADMINISTRADOR"
 }
 
 ### Cadastrar usuário 3
@@ -71,3 +76,18 @@ DELETE http://localhost:8080/usuarios/1
 
 ### Buscar CEP
 GET http://localhost:8080/cep/44905000
+
+###
+
+PUT http://localhost:8080/usuarios/1
+Content-Type: application/json
+
+{
+  "nome": "Administrador",
+  "email": "admin@gmail.com",
+  "telefone": "(77) 77777-7777",
+  "status": "Ativo",
+  "tipoUsuario": "ADMINISTRADOR",
+  "senhaAtual": "",
+  "novaSenha": ""
+}

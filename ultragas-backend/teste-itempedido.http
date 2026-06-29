@@ -1,0 +1,31 @@
+### Criar item do pedido
+POST http://localhost:8080/itens-pedido
+Content-Type: application/json
+
+{
+  "quantidade": 2,
+  "pedidoId": 1,
+  "produtoId": 1
+}
+
+### Listar itens
+GET http://localhost:8080/itens-pedido?page=0&size=10
+
+### Buscar item
+GET http://localhost:8080/itens-pedido/1
+
+### Atualizar item
+PUT http://localhost:8080/itens-pedido/1
+Content-Type: application/json
+
+{
+  "quantidade": 3,
+  "pedidoId": 1,
+  "produtoId": 1
+}
+
+### Deletar item
+DELETE http://localhost:8080/itens-pedido/1
+
+###
+GET http://localhost:8080/itens-pedido/pedido/1?page=0&size=100

@@ -1,0 +1,19 @@
+### Cadastrar com verificação
+POST http://localhost:8080/auth/cadastrar
+Content-Type: application/json
+
+{
+  "nome": "Teste Verificacao",
+  "email": "teste.verificacao@gmail.com",
+  "senha": "12345678",
+  "tipoUsuario": "CLIENTE"
+}
+
+### Verificar código
+POST http://localhost:8080/auth/verificar-codigo
+Content-Type: application/json
+
+{
+  "email": "teste.verificacao@gmail.com",
+  "codigo": "389343"
+}

@@ -1,0 +1,37 @@
+### Criar pedido
+POST http://localhost:8080/pedidos
+Content-Type: application/json
+
+{
+  "status": "Pendente",
+  "valorTotal": 108.0,
+  "usuarioId": 1,
+  "enderecoId": 1
+}
+
+### Listar pedidos
+GET http://localhost:8080/pedidos?page=0&size=10
+
+### Buscar pedido
+GET http://localhost:8080/pedidos/1
+
+### Atualizar pedido
+PUT http://localhost:8080/pedidos/1
+Content-Type: application/json
+
+{
+  "status": "Em entrega",
+  "valorTotal": 108.0,
+  "usuarioId": 1,
+  "enderecoId": 1
+}
+
+### Deletar pedido
+DELETE http://localhost:8080/pedidos/1
+
+###
+
+GET http://localhost:8080/pedidos/usuario/1?page=0&size=100
+
+###
+GET http://localhost:8080/pedidos?page=0&size=100

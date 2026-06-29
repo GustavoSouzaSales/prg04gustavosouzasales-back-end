@@ -1,0 +1,132 @@
+### GLP P13 Azul
+POST http://localhost:8080/produtos
+Content-Type: application/json
+
+{
+  "nome": "GLP Envasado P13",
+  "peso": "13kg",
+  "cor": "Azul",
+  "preco": 108.0,
+  "estoque": 20,
+  "ativo": true
+}
+
+### GLP P13 Cinza
+POST http://localhost:8080/produtos
+Content-Type: application/json
+
+{
+  "nome": "GLP Envasado P13",
+  "peso": "13kg",
+  "cor": "Cinza",
+  "preco": 96.0,
+  "estoque": 15,
+  "ativo": true
+}
+
+### GLP P13 Amarelo
+POST http://localhost:8080/produtos
+Content-Type: application/json
+
+{
+  "nome": "GLP Envasado P13",
+  "peso": "13kg",
+  "cor": "Amarelo",
+  "preco": 96.0,
+  "estoque": 15,
+  "ativo": true
+}
+
+### GLP P20 Azul
+POST http://localhost:8080/produtos
+Content-Type: application/json
+
+{
+  "nome": "GLP Envasado P20",
+  "peso": "20kg",
+  "cor": "Azul",
+  "preco": 220.0,
+  "estoque": 10,
+  "ativo": true
+}
+
+### GLP P45 Azul
+POST http://localhost:8080/produtos
+Content-Type: application/json
+
+{
+  "nome": "GLP Envasado P45",
+  "peso": "45kg",
+  "cor": "Azul",
+  "preco": 520.0,
+  "estoque": 8,
+  "ativo": true
+}
+
+### Vasilhame P13 Azul
+POST http://localhost:8080/produtos
+Content-Type: application/json
+
+{
+  "nome": "Vasilhame P13 Vazio Ativo Imobilizado",
+  "peso": "13kg",
+  "cor": "Azul",
+  "preco": 198.0,
+  "estoque": 12,
+  "ativo": true
+}
+
+### Vasilhame P13 Cinza
+POST http://localhost:8080/produtos
+Content-Type: application/json
+
+{
+  "nome": "Vasilhame P13 Vazio Ativo Imobilizado",
+  "peso": "13kg",
+  "cor": "Cinza",
+  "preco": 198.0,
+  "estoque": 12,
+  "ativo": true
+}
+
+### Vasilhame P13 Amarelo
+POST http://localhost:8080/produtos
+Content-Type: application/json
+
+{
+  "nome": "Vasilhame P13 Vazio Ativo Imobilizado",
+  "peso": "13kg",
+  "cor": "Amarelo",
+  "preco": 198.0,
+  "estoque": 12,
+  "ativo": true
+}
+
+### Vasilhame P20 Azul
+POST http://localhost:8080/produtos
+Content-Type: application/json
+
+{
+  "nome": "Vasilhame P20 Vazio Ativo Imobilizado",
+  "peso": "20kg",
+  "cor": "Azul",
+  "preco": 424.0,
+  "estoque": 6,
+  "ativo": true
+}
+
+### Vasilhame P45 Azul
+POST http://localhost:8080/produtos
+Content-Type: application/json
+
+{
+  "nome": "Vasilhame P45 Vazio Ativo Imobilizado",
+  "peso": "45kg",
+  "cor": "Azul",
+  "preco": 509.0,
+  "estoque": 5,
+  "ativo": true
+}
+
+### Listar produtos
+GET http://localhost:8080/produtos?page=0&size=20

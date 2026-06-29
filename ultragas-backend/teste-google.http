@@ -1,0 +1,9 @@
+### Login Google
+
+POST http://localhost:8080/auth/google
+Content-Type: application/json
+
+{
+  "nome": "Gustavo Teste",
+  "email": "gustavoteste@gmail.com"
+}

@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Arquivos locais (não enviar para o GitHub) ###
+src/main/resources/application-local.properties

@@ -1,0 +1,30 @@
+### Criar log
+POST http://localhost:8080/logs
+Content-Type: application/json
+
+{
+  "acao": "LOGIN",
+  "descricao": "Usuário realizou login no sistema",
+  "ip": "127.0.0.1",
+  "usuarioId": 1
+}
+
+### Criar log de pedido
+POST http://localhost:8080/logs
+Content-Type: application/json
+
+{
+  "acao": "CRIAR_PEDIDO",
+  "descricao": "Usuário criou um novo pedido",
+  "ip": "127.0.0.1",
+  "usuarioId": 1
+}
+
+### Listar logs
+GET http://localhost:8080/logs?page=0&size=10
+
+### Buscar log
+GET http://localhost:8080/logs/1
+
+### Deletar log
+DELETE http://localhost:8080/logs/1

@@ -1,0 +1,44 @@
+### Criar pagamento Pix
+POST http://localhost:8080/pagamentos
+Content-Type: application/json
+
+{
+  "formaPagamento": "Pix",
+  "statusPagamento": "Pendente",
+  "valorPago": 108.0,
+  "valorTroco": 0.0,
+  "pedidoId": 1
+}
+
+### Criar pagamento em dinheiro
+POST http://localhost:8080/pagamentos
+Content-Type: application/json
+
+{
+  "formaPagamento": "Dinheiro",
+  "statusPagamento": "Pendente",
+  "valorPago": 200.0,
+  "valorTroco": 92.0,
+  "pedidoId": 1
+}
+
+### Listar pagamentos
+GET http://localhost:8080/pagamentos?page=0&size=10
+
+### Buscar pagamento
+GET http://localhost:8080/pagamentos/1
+
+### Atualizar pagamento
+PUT http://localhost:8080/pagamentos/1
+Content-Type: application/json
+
+{
+  "formaPagamento": "Pix",
+  "statusPagamento": "Confirmado",
+  "valorPago": 108.0,
+  "valorTroco": 0.0,
+  "pedidoId": 1
+}
+
+### Deletar pagamento
+DELETE http://localhost:8080/pagamentos/1
