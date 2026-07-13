@@ -9,6 +9,7 @@ import br.com.ifba.prg04ultragas.usuario.model.Usuario;
 import br.com.ifba.prg04ultragas.usuario.repository.UsuarioRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import br.com.ifba.prg04ultragas.log.service.LogService;
 
 import jakarta.transaction.Transactional;
 
@@ -24,6 +25,10 @@ public class UsuarioService {
     @Autowired
     private ObjectMapperUtil mapper;
 
+    @Autowired
+    private LogService logService;
+
+    // Lista todos os usuários de forma paginada
     public Page<UsuarioResponseDTO> listarUsuarios(Pageable pageable) {
 
         Page<Usuario> usuarios = repository.findAll(pageable);
@@ -33,6 +38,7 @@ public class UsuarioService {
         );
     }
 
+    // Busca um usuário pelo ID
     public UsuarioResponseDTO buscarUsuarioPorId(Long id) {
 
         Usuario usuario = repository.findById(id)
@@ -45,8 +51,10 @@ public class UsuarioService {
     @Transactional
     public UsuarioResponseDTO salvarUsuario(UsuarioRequestDTO dto) {
 
+        // Converte o DTO para a entidade
         Usuario usuario = mapper.map(dto, Usuario.class);
 
+        // Define valores padrão caso não sejam enviados
         if (usuario.getStatus() == null || usuario.getStatus().isBlank()) {
             usuario.setStatus("Ativo");
         }
@@ -57,6 +65,14 @@ public class UsuarioService {
 
         usuario = repository.save(usuario);
 
+        // Registra a ação no log
+        logService.registrarAuditoria(
+                "CRIACAO_USUARIO",
+                "Usuário criado: " + usuario.getEmail(),
+                "Usuario",
+                usuario.getId(),
+                usuario
+        );
         return mapper.map(usuario, UsuarioResponseDTO.class);
     }
 
@@ -67,14 +83,17 @@ public class UsuarioService {
                 .orElseThrow(() ->
                         new BusinessException("Usuário não encontrado"));
 
+        // Atualiza os dados do usuário
         usuario.setNome(dto.getNome());
         usuario.setEmail(dto.getEmail());
         usuario.setTelefone(dto.getTelefone());
         usuario.setStatus(dto.getStatus());
         usuario.setTipoUsuario(dto.getTipoUsuario());
 
+        // Só altera a senha se uma nova for informada
         if (dto.getNovaSenha() != null && !dto.getNovaSenha().isBlank()) {
 
+            // Confere se a senha atual está correta
             if (dto.getSenhaAtual() == null || !dto.getSenhaAtual().equals(usuario.getSenha())) {
                 throw new BusinessException("Senha atual inválida");
             }
@@ -83,6 +102,15 @@ public class UsuarioService {
         }
 
         usuario = repository.save(usuario);
+
+        // Registra a alteração no log
+        logService.registrarAuditoria(
+                "ATUALIZACAO_USUARIO",
+                "Usuário atualizado: " + usuario.getEmail(),
+                "Usuario",
+                usuario.getId(),
+                usuario
+        );
 
         return mapper.map(usuario, UsuarioResponseDTO.class);
     }
@@ -93,6 +121,15 @@ public class UsuarioService {
         Usuario usuario = repository.findById(id)
                 .orElseThrow(() ->
                         new BusinessException("Usuário não encontrado"));
+
+        // Salva a exclusão no histórico
+        logService.registrarAuditoria(
+                "EXCLUSAO_USUARIO",
+                "Usuário excluído: " + usuario.getEmail(),
+                "Usuario",
+                usuario.getId(),
+                usuario
+        );
 
         repository.delete(usuario);
     }

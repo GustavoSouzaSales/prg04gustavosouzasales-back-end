@@ -1,5 +1,6 @@
 package br.com.ifba.prg04ultragas.usuario.model;
 
+import br.com.ifba.prg04ultragas.infrastructure.model.PersistenceEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,11 +9,8 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Usuario {
+public class Usuario extends PersistenceEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     private String nome;
 

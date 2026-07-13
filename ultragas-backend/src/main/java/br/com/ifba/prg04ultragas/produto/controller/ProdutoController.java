@@ -13,17 +13,19 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/produtos")
-@CrossOrigin("*")
+@CrossOrigin("*") // Permite acesso ao front-end
 public class ProdutoController {
 
     @Autowired
     private ProdutoService service;
 
+    // Lista todos os produtos
     @GetMapping
     public Page<ProdutoResponseDTO> listarProdutos(Pageable pageable) {
         return service.listarProdutos(pageable);
     }
 
+    // Cadastra um novo produto
     @PostMapping
     public ProdutoResponseDTO salvarProduto(
             @RequestBody @Valid ProdutoRequestDTO dto
@@ -31,6 +33,7 @@ public class ProdutoController {
         return service.salvarProduto(dto);
     }
 
+    // Busca um produto pelo ID
     @GetMapping("/{id}")
     public ProdutoResponseDTO buscarProdutoPorId(
             @PathVariable Long id
@@ -38,6 +41,7 @@ public class ProdutoController {
         return service.buscarProdutoPorId(id);
     }
 
+    // Atualiza os dados de um produto
     @PutMapping("/{id}")
     public ProdutoResponseDTO atualizarProduto(
             @PathVariable Long id,
@@ -46,6 +50,7 @@ public class ProdutoController {
         return service.atualizarProduto(id, dto);
     }
 
+    // Remove um produto
     @DeleteMapping("/{id}")
     public void deletarProduto(@PathVariable Long id) {
         service.deletarProduto(id);

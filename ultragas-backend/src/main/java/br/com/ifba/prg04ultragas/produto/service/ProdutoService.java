@@ -6,6 +6,7 @@ import br.com.ifba.prg04ultragas.produto.dto.ProdutoRequestDTO;
 import br.com.ifba.prg04ultragas.produto.dto.ProdutoResponseDTO;
 import br.com.ifba.prg04ultragas.produto.model.Produto;
 import br.com.ifba.prg04ultragas.produto.repository.ProdutoRepository;
+import br.com.ifba.prg04ultragas.log.service.LogService;
 
 import jakarta.transaction.Transactional;
 
@@ -22,6 +23,9 @@ public class ProdutoService {
 
     @Autowired
     private ObjectMapperUtil mapper;
+
+    @Autowired
+    private LogService logService;
 
     public Page<ProdutoResponseDTO> listarProdutos(Pageable pageable) {
 
@@ -52,6 +56,14 @@ public class ProdutoService {
 
         produto = repository.save(produto);
 
+        logService.registrarAuditoria(
+                "CRIACAO_PRODUTO",
+                "Produto " + produto.getNome() + " criado.",
+                "Produto",
+                produto.getId(),
+                null
+        );
+
         return mapper.map(produto, ProdutoResponseDTO.class);
     }
 
@@ -71,6 +83,14 @@ public class ProdutoService {
 
         produto = repository.save(produto);
 
+        logService.registrarAuditoria(
+                "ATUALIZACAO_PRODUTO",
+                "Produto " + produto.getNome() + " atualizado.",
+                "Produto",
+                produto.getId(),
+                null
+        );
+
         return mapper.map(produto, ProdutoResponseDTO.class);
     }
 
@@ -80,6 +100,14 @@ public class ProdutoService {
         Produto produto = repository.findById(id)
                 .orElseThrow(() ->
                         new BusinessException("Produto não encontrado"));
+
+        logService.registrarAuditoria(
+                "EXCLUSAO_PRODUTO",
+                "Produto " + produto.getNome() + " excluído.",
+                "Produto",
+                produto.getId(),
+                null
+        );
 
         repository.delete(produto);
     }

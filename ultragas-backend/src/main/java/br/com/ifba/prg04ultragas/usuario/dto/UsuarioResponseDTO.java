@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class UsuarioResponseDTO {
 
+    // ID do usuário
     private Long id;
 
     private String nome;
@@ -17,5 +18,6 @@ public class UsuarioResponseDTO {
 
     private String status;
 
+    // Tipo do usuário (cliente ou administrador)
     private String tipoUsuario;
 }

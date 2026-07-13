@@ -16,11 +16,15 @@ public class VerificacaoEmail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Email que será verificado
     private String email;
 
+    // Código enviado para o usuário
     private String codigo;
 
+    // Tempo limite para usar o código
     private LocalDateTime dataExpiracao;
 
+    // Indica se o código já foi utilizado
     private Boolean usado;
 }

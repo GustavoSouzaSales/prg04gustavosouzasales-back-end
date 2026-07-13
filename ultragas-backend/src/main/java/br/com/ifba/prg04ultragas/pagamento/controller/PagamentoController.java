@@ -13,17 +13,19 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/pagamentos")
-@CrossOrigin("*")
+@CrossOrigin("*") // Permite acesso ao front-end
 public class PagamentoController {
 
     @Autowired
     private PagamentoService service;
 
+    // Lista todos os pagamentos
     @GetMapping
     public Page<PagamentoResponseDTO> listarPagamentos(Pageable pageable) {
         return service.listarPagamentos(pageable);
     }
 
+    // Cadastra um novo pagamento
     @PostMapping
     public PagamentoResponseDTO salvarPagamento(
             @RequestBody @Valid PagamentoRequestDTO dto
@@ -31,6 +33,7 @@ public class PagamentoController {
         return service.salvarPagamento(dto);
     }
 
+    // Busca um pagamento pelo ID
     @GetMapping("/{id}")
     public PagamentoResponseDTO buscarPagamentoPorId(
             @PathVariable Long id
@@ -38,6 +41,7 @@ public class PagamentoController {
         return service.buscarPagamentoPorId(id);
     }
 
+    // Atualiza um pagamento
     @PutMapping("/{id}")
     public PagamentoResponseDTO atualizarPagamento(
             @PathVariable Long id,
@@ -46,6 +50,7 @@ public class PagamentoController {
         return service.atualizarPagamento(id, dto);
     }
 
+    // Remove um pagamento
     @DeleteMapping("/{id}")
     public void deletarPagamento(@PathVariable Long id) {
         service.deletarPagamento(id);

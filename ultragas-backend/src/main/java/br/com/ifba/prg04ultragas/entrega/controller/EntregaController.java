@@ -13,17 +13,19 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/entregas")
-@CrossOrigin("*")
+@CrossOrigin("*") // Permite acesso ao front-end
 public class EntregaController {
 
     @Autowired
     private EntregaService service;
 
+    // Lista todas as entregas
     @GetMapping
     public Page<EntregaResponseDTO> listarEntregas(Pageable pageable) {
         return service.listarEntregas(pageable);
     }
 
+    // Cadastra uma nova entrega
     @PostMapping
     public EntregaResponseDTO salvarEntrega(
             @RequestBody @Valid EntregaRequestDTO dto
@@ -31,6 +33,7 @@ public class EntregaController {
         return service.salvarEntrega(dto);
     }
 
+    // Busca uma entrega pelo ID
     @GetMapping("/{id}")
     public EntregaResponseDTO buscarEntregaPorId(
             @PathVariable Long id
@@ -38,6 +41,7 @@ public class EntregaController {
         return service.buscarEntregaPorId(id);
     }
 
+    // Atualiza uma entrega
     @PutMapping("/{id}")
     public EntregaResponseDTO atualizarEntrega(
             @PathVariable Long id,
@@ -46,6 +50,7 @@ public class EntregaController {
         return service.atualizarEntrega(id, dto);
     }
 
+    // Remove uma entrega
     @DeleteMapping("/{id}")
     public void deletarEntrega(@PathVariable Long id) {
         service.deletarEntrega(id);

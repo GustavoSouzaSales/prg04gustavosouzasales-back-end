@@ -13,17 +13,19 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/pedidos")
-@CrossOrigin("*")
+@CrossOrigin("*") // Permite acesso ao front-end
 public class PedidoController {
 
     @Autowired
     private PedidoService service;
 
+    // Lista todos os pedidos
     @GetMapping
     public Page<PedidoResponseDTO> listarPedidos(Pageable pageable) {
         return service.listarPedidos(pageable);
     }
 
+    // Cadastra um novo pedido
     @PostMapping
     public PedidoResponseDTO salvarPedido(
             @RequestBody @Valid PedidoRequestDTO dto
@@ -31,6 +33,7 @@ public class PedidoController {
         return service.salvarPedido(dto);
     }
 
+    // Lista os pedidos de um usuário específico
     @GetMapping("/usuario/{usuarioId}")
     public Page<PedidoResponseDTO> listarPedidosPorUsuario(
             @PathVariable Long usuarioId,
@@ -39,6 +42,7 @@ public class PedidoController {
         return service.listarPedidosPorUsuario(usuarioId, pageable);
     }
 
+    // Busca um pedido pelo ID
     @GetMapping("/{id}")
     public PedidoResponseDTO buscarPedidoPorId(
             @PathVariable Long id
@@ -46,6 +50,7 @@ public class PedidoController {
         return service.buscarPedidoPorId(id);
     }
 
+    // Atualiza um pedido
     @PutMapping("/{id}")
     public PedidoResponseDTO atualizarPedido(
             @PathVariable Long id,
@@ -54,6 +59,7 @@ public class PedidoController {
         return service.atualizarPedido(id, dto);
     }
 
+    // Remove um pedido
     @DeleteMapping("/{id}")
     public void deletarPedido(@PathVariable Long id) {
         service.deletarPedido(id);

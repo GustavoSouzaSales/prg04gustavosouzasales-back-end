@@ -1,5 +1,6 @@
 package br.com.ifba.prg04ultragas.entrega.model;
 
+import br.com.ifba.prg04ultragas.infrastructure.model.PersistenceEntity;
 import br.com.ifba.prg04ultragas.pedido.model.Pedido;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,20 +10,20 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Entrega {
+public class Entrega extends PersistenceEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    // Define se será entrega ou retirada
+    private String formaRecebimento;
 
-    private String formaRecebimento; // Entrega ou Retirada
-
-    private String horarioPreferido; // Manhã, Tarde, Noite
+    // Horário preferido para receber
+    private String horarioPreferido;
 
     private Double taxaEntrega;
 
+    // Situação da entrega
     private String statusEntrega;
 
+    // Cada entrega pertence a um único pedido
     @OneToOne
     @JoinColumn(name = "pedido_id")
     private Pedido pedido;

@@ -15,6 +15,12 @@ public class LogResponseDTO {
 
     private String descricao;
 
+    private String entidade;
+
+    private Long entidadeId;
+
+    private String usuarioEmail;
+
     private String ip;
 
     private LocalDateTime dataHora;

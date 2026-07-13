@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 public class EnderecoRequestDTO {
 
+    // Nome para identificar o endereço
     @NotBlank(message = "O título não pode ser vazio")
     private String titulo;
 
@@ -30,8 +31,10 @@ public class EnderecoRequestDTO {
     @NotBlank(message = "A UF não pode ser vazia")
     private String uf;
 
+    // Indica se é o endereço principal
     private Boolean principal;
 
+    // Usuário dono do endereço
     @NotNull(message = "O usuário é obrigatório")
     private Long usuarioId;
 }

@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 public class EntregaRequestDTO {
 
+    // Forma de recebimento escolhida
     @NotBlank(message = "A forma de recebimento é obrigatória")
     private String formaRecebimento;
 
@@ -16,8 +17,10 @@ public class EntregaRequestDTO {
 
     private Double taxaEntrega;
 
+    // Status da entrega
     private String statusEntrega;
 
+    // Pedido relacionado à entrega
     @NotNull(message = "O pedido é obrigatório")
     private Long pedidoId;
 }

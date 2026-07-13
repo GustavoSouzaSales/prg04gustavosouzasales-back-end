@@ -24,10 +24,12 @@ public class EntregaService {
     @Autowired
     private PedidoRepository pedidoRepository;
 
+    // Lista todas as entregas
     public Page<EntregaResponseDTO> listarEntregas(Pageable pageable) {
         return repository.findAll(pageable).map(this::toResponse);
     }
 
+    // Busca uma entrega pelo ID
     public EntregaResponseDTO buscarEntregaPorId(Long id) {
         Entrega entrega = repository.findById(id)
                 .orElseThrow(() -> new BusinessException("Entrega não encontrada"));
@@ -37,12 +39,16 @@ public class EntregaService {
 
     @Transactional
     public EntregaResponseDTO salvarEntrega(EntregaRequestDTO dto) {
+
+        // Verifica se o pedido existe
         Pedido pedido = pedidoRepository.findById(dto.getPedidoId())
                 .orElseThrow(() -> new BusinessException("Pedido não encontrado"));
 
         Entrega entrega = new Entrega();
         entrega.setFormaRecebimento(dto.getFormaRecebimento());
         entrega.setHorarioPreferido(dto.getHorarioPreferido());
+
+        // Define taxa e status padrão caso não sejam informados
         entrega.setTaxaEntrega(dto.getTaxaEntrega() != null ? dto.getTaxaEntrega() : 0.0);
         entrega.setStatusEntrega(
                 dto.getStatusEntrega() != null ? dto.getStatusEntrega() : "Pendente"
@@ -81,6 +87,7 @@ public class EntregaService {
         repository.delete(entrega);
     }
 
+    // Converte a entidade para DTO de resposta
     private EntregaResponseDTO toResponse(Entrega entrega) {
         EntregaResponseDTO dto = new EntregaResponseDTO();
 

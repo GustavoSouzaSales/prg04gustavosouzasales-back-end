@@ -10,10 +10,16 @@ import java.time.LocalDateTime;
 public class NotificacaoResponseDTO {
 
     private Long id;
+
     private String titulo;
+
     private String mensagem;
+
     private String tipo;
+
     private Boolean lida;
+
     private LocalDateTime dataCriacao;
+
     private Long usuarioId;
 }

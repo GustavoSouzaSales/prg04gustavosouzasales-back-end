@@ -9,13 +9,19 @@ import lombok.Setter;
 @Setter
 public class LogRequestDTO {
 
+    // Ação realizada no sistema
     @NotBlank(message = "A ação é obrigatória")
     private String acao;
 
     private String descricao;
 
+    private String entidade;
+
+    private Long entidadeId;
+
     private String ip;
 
+    // Usuário responsável pelo log
     @NotNull(message = "O usuário é obrigatório")
     private Long usuarioId;
 }

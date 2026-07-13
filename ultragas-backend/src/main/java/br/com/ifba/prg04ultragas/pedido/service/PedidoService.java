@@ -10,6 +10,7 @@ import br.com.ifba.prg04ultragas.pedido.repository.PedidoRepository;
 import br.com.ifba.prg04ultragas.usuario.model.Usuario;
 import br.com.ifba.prg04ultragas.usuario.repository.UsuarioRepository;
 import br.com.ifba.prg04ultragas.notificacao.service.NotificacaoService;
+import br.com.ifba.prg04ultragas.log.service.LogService;
 
 import jakarta.transaction.Transactional;
 
@@ -34,6 +35,9 @@ public class PedidoService {
 
     @Autowired
     private NotificacaoService notificacaoService;
+
+    @Autowired
+    private LogService logService;
 
     public Page<PedidoResponseDTO> listarPedidos(Pageable pageable) {
         return repository.findAll(pageable).map(this::toResponse);
@@ -79,6 +83,14 @@ public class PedidoService {
                 "PEDIDO"
         );
 
+        logService.registrarAuditoria(
+                "CRIACAO_PEDIDO",
+                "Pedido " + pedido.getCodigo() + " criado com sucesso.",
+                "Pedido",
+                pedido.getId(),
+                usuario
+        );
+
         return toResponse(pedido);
     }
 
@@ -86,6 +98,8 @@ public class PedidoService {
     public PedidoResponseDTO atualizarPedido(Long id, PedidoRequestDTO dto) {
         Pedido pedido = repository.findById(id)
                 .orElseThrow(() -> new BusinessException("Pedido não encontrado"));
+
+        String statusAnterior = pedido.getStatus();
 
         Usuario usuario = usuarioRepository.findById(dto.getUsuarioId())
                 .orElseThrow(() -> new BusinessException("Usuário não encontrado"));
@@ -109,6 +123,24 @@ public class PedidoService {
         pedido.setTelefoneContato(dto.getTelefoneContato());
 
         pedido = repository.save(pedido);
+
+        if (dto.getStatus() != null &&
+                !dto.getStatus().equalsIgnoreCase(statusAnterior)) {
+
+            String acao = "Cancelado".equalsIgnoreCase(dto.getStatus())
+                    ? "CANCELAMENTO_PEDIDO"
+                    : "ALTERACAO_STATUS_PEDIDO";
+
+            logService.registrarAuditoria(
+                    acao,
+                    "Status do pedido " + pedido.getCodigo()
+                            + " alterado de " + statusAnterior
+                            + " para " + pedido.getStatus() + ".",
+                    "Pedido",
+                    pedido.getId(),
+                    usuario
+            );
+        }
 
         if ("Em entrega".equalsIgnoreCase(pedido.getStatus())) {
             notificacaoService.criarNotificacao(
@@ -142,8 +174,20 @@ public class PedidoService {
 
     @Transactional
     public void deletarPedido(Long id) {
+
         Pedido pedido = repository.findById(id)
-                .orElseThrow(() -> new BusinessException("Pedido não encontrado"));
+                .orElseThrow(() ->
+                        new BusinessException("Pedido não encontrado"));
+
+        Usuario usuario = pedido.getUsuario();
+
+        logService.registrarAuditoria(
+                "EXCLUSAO_PEDIDO",
+                "Pedido " + pedido.getCodigo() + " excluído.",
+                "Pedido",
+                pedido.getId(),
+                usuario
+        );
 
         repository.delete(pedido);
     }

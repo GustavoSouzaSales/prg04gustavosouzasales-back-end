@@ -26,10 +26,12 @@ public class LogService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    // Lista todos os logs
     public Page<LogResponseDTO> listarLogs(Pageable pageable) {
         return repository.findAll(pageable).map(this::toResponse);
     }
 
+    // Busca um log pelo ID
     public LogResponseDTO buscarLogPorId(Long id) {
         Log log = repository.findById(id)
                 .orElseThrow(() -> new BusinessException("Log não encontrado"));
@@ -39,12 +41,17 @@ public class LogService {
 
     @Transactional
     public LogResponseDTO salvarLog(LogRequestDTO dto) {
+
+        // Verifica se o usuário existe
         Usuario usuario = usuarioRepository.findById(dto.getUsuarioId())
                 .orElseThrow(() -> new BusinessException("Usuário não encontrado"));
 
         Log log = new Log();
         log.setAcao(dto.getAcao());
         log.setDescricao(dto.getDescricao());
+        log.setEntidade(dto.getEntidade());
+        log.setEntidadeId(dto.getEntidadeId());
+        log.setUsuarioEmail(usuario.getEmail());
         log.setIp(dto.getIp());
         log.setDataHora(LocalDateTime.now());
         log.setUsuario(usuario);
@@ -62,12 +69,16 @@ public class LogService {
         repository.delete(log);
     }
 
+    // Converte a entidade para DTO
     private LogResponseDTO toResponse(Log log) {
         LogResponseDTO dto = new LogResponseDTO();
 
         dto.setId(log.getId());
         dto.setAcao(log.getAcao());
         dto.setDescricao(log.getDescricao());
+        dto.setEntidade(log.getEntidade());
+        dto.setEntidadeId(log.getEntidadeId());
+        dto.setUsuarioEmail(log.getUsuarioEmail());
         dto.setIp(log.getIp());
         dto.setDataHora(log.getDataHora());
 
@@ -76,5 +87,31 @@ public class LogService {
         }
 
         return dto;
+    }
+
+    @Transactional
+    public void registrarAuditoria(
+            String acao,
+            String descricao,
+            String entidade,
+            Long entidadeId,
+            Usuario usuario
+    ) {
+
+        // Registra automaticamente ações importantes do sistema
+        Log log = new Log();
+
+        log.setAcao(acao);
+        log.setDescricao(descricao);
+        log.setEntidade(entidade);
+        log.setEntidadeId(entidadeId);
+        log.setDataHora(LocalDateTime.now());
+
+        if (usuario != null) {
+            log.setUsuario(usuario);
+            log.setUsuarioEmail(usuario.getEmail());
+        }
+
+        repository.save(log);
     }
 }

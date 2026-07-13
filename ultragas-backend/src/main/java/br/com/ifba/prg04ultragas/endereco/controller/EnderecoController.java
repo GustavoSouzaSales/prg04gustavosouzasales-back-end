@@ -13,17 +13,19 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/enderecos")
-@CrossOrigin("*")
+@CrossOrigin("*") // Permite acesso ao front-end
 public class EnderecoController {
 
     @Autowired
     private EnderecoService service;
 
+    // Lista todos os endereços
     @GetMapping
     public Page<EnderecoResponseDTO> listarEnderecos(Pageable pageable) {
         return service.listarEnderecos(pageable);
     }
 
+    // Cadastra um novo endereço
     @PostMapping
     public EnderecoResponseDTO salvarEndereco(
             @RequestBody @Valid EnderecoRequestDTO dto
@@ -31,6 +33,7 @@ public class EnderecoController {
         return service.salvarEndereco(dto);
     }
 
+    // Lista os endereços de um usuário
     @GetMapping("/usuario/{usuarioId}")
     public Page<EnderecoResponseDTO> listarEnderecosPorUsuario(
             @PathVariable Long usuarioId,
@@ -39,6 +42,7 @@ public class EnderecoController {
         return service.listarEnderecosPorUsuario(usuarioId, pageable);
     }
 
+    // Busca um endereço pelo ID
     @GetMapping("/{id}")
     public EnderecoResponseDTO buscarEnderecoPorId(
             @PathVariable Long id
@@ -46,6 +50,7 @@ public class EnderecoController {
         return service.buscarEnderecoPorId(id);
     }
 
+    // Atualiza um endereço
     @PutMapping("/{id}")
     public EnderecoResponseDTO atualizarEndereco(
             @PathVariable Long id,
@@ -54,6 +59,7 @@ public class EnderecoController {
         return service.atualizarEndereco(id, dto);
     }
 
+    // Remove um endereço
     @DeleteMapping("/{id}")
     public void deletarEndereco(@PathVariable Long id) {
         service.deletarEndereco(id);

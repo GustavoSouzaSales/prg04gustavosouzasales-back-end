@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 
-
+// Repositório responsável pelas operações no banco
 public interface ItemPedidoRepository extends JpaRepository<ItemPedido, Long> {
     Page<ItemPedido> findByPedidoId(Long pedidoId, Pageable pageable);
 }

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
+// Repositório responsável pelas operações no banco
 public interface VerificacaoEmailRepository extends JpaRepository<VerificacaoEmail, Long> {
 
     Optional<VerificacaoEmail> findTopByEmailAndCodigoAndUsadoFalseOrderByIdDesc(

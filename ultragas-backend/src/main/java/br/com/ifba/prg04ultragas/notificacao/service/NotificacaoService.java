@@ -24,6 +24,7 @@ public class NotificacaoService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    // Lista as notificações de um usuário
     public List<NotificacaoResponseDTO> listarPorUsuario(Long usuarioId) {
         return repository.findByUsuarioIdOrderByDataCriacaoDesc(usuarioId)
                 .stream()
@@ -38,6 +39,7 @@ public class NotificacaoService {
             String mensagem,
             String tipo
     ) {
+        // Verifica se o usuário existe
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new BusinessException("Usuário não encontrado."));
 
@@ -59,6 +61,7 @@ public class NotificacaoService {
         Notificacao notificacao = repository.findById(id)
                 .orElseThrow(() -> new BusinessException("Notificação não encontrada."));
 
+
         notificacao.setLida(true);
         notificacao = repository.save(notificacao);
 
@@ -69,6 +72,7 @@ public class NotificacaoService {
     public void marcarTodasComoLidas(Long usuarioId) {
         List<Notificacao> notificacoes = repository.findByUsuarioIdOrderByDataCriacaoDesc(usuarioId);
 
+        // Marca todas como lidas
         notificacoes.forEach((n) -> n.setLida(true));
 
         repository.saveAll(notificacoes);
@@ -82,6 +86,7 @@ public class NotificacaoService {
         repository.delete(notificacao);
     }
 
+    // Converte a entidade para DTO
     private NotificacaoResponseDTO toResponse(Notificacao notificacao) {
         NotificacaoResponseDTO dto = new NotificacaoResponseDTO();
 

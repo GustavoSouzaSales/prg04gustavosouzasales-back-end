@@ -13,17 +13,19 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/logs")
-@CrossOrigin("*")
+@CrossOrigin("*") // Permite acesso ao front-end
 public class LogController {
 
     @Autowired
     private LogService service;
 
+    // Lista todos os logs
     @GetMapping
     public Page<LogResponseDTO> listarLogs(Pageable pageable) {
         return service.listarLogs(pageable);
     }
 
+    // Cadastra um novo log
     @PostMapping
     public LogResponseDTO salvarLog(
             @RequestBody @Valid LogRequestDTO dto
@@ -31,6 +33,7 @@ public class LogController {
         return service.salvarLog(dto);
     }
 
+    // Busca um log pelo ID
     @GetMapping("/{id}")
     public LogResponseDTO buscarLogPorId(
             @PathVariable Long id
@@ -38,6 +41,7 @@ public class LogController {
         return service.buscarLogPorId(id);
     }
 
+    // Remove um log
     @DeleteMapping("/{id}")
     public void deletarLog(@PathVariable Long id) {
         service.deletarLog(id);

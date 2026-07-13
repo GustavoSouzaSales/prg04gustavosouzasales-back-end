@@ -29,10 +29,12 @@ public class ItemPedidoService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
+    // Lista todos os itens de pedido
     public Page<ItemPedidoResponseDTO> listarItens(Pageable pageable) {
         return repository.findAll(pageable).map(this::toResponse);
     }
 
+    // Busca um item pelo ID
     public ItemPedidoResponseDTO buscarItemPorId(Long id) {
         ItemPedido item = repository.findById(id)
                 .orElseThrow(() -> new BusinessException("Item do pedido não encontrado"));
@@ -42,12 +44,15 @@ public class ItemPedidoService {
 
     @Transactional
     public ItemPedidoResponseDTO salvarItem(ItemPedidoRequestDTO dto) {
+
+        // Verifica se o pedido e o produto existem
         Pedido pedido = pedidoRepository.findById(dto.getPedidoId())
                 .orElseThrow(() -> new BusinessException("Pedido não encontrado"));
 
         Produto produto = produtoRepository.findById(dto.getProdutoId())
                 .orElseThrow(() -> new BusinessException("Produto não encontrado"));
 
+        // Calcula os valores do item
         Double valorUnitario = produto.getPreco();
         Double subtotal = valorUnitario * dto.getQuantidade();
 
@@ -74,6 +79,7 @@ public class ItemPedidoService {
         Produto produto = produtoRepository.findById(dto.getProdutoId())
                 .orElseThrow(() -> new BusinessException("Produto não encontrado"));
 
+        // Recalcula os valores após a atualização
         Double valorUnitario = produto.getPreco();
         Double subtotal = valorUnitario * dto.getQuantidade();
 
@@ -96,6 +102,7 @@ public class ItemPedidoService {
         repository.delete(item);
     }
 
+    // Converte a entidade para DTO
     private ItemPedidoResponseDTO toResponse(ItemPedido item) {
         ItemPedidoResponseDTO dto = new ItemPedidoResponseDTO();
 
@@ -118,6 +125,7 @@ public class ItemPedidoService {
         return dto;
     }
 
+    // Lista os itens de um pedido específico
     public Page<ItemPedidoResponseDTO> listarItensPorPedido(
             Long pedidoId,
             Pageable pageable

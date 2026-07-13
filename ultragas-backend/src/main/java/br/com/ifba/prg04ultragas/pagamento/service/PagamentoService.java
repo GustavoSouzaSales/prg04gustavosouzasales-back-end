@@ -24,10 +24,12 @@ public class PagamentoService {
     @Autowired
     private PedidoRepository pedidoRepository;
 
+    // Lista todos os pagamentos
     public Page<PagamentoResponseDTO> listarPagamentos(Pageable pageable) {
         return repository.findAll(pageable).map(this::toResponse);
     }
 
+    // Busca um pagamento pelo ID
     public PagamentoResponseDTO buscarPagamentoPorId(Long id) {
         Pagamento pagamento = repository.findById(id)
                 .orElseThrow(() -> new BusinessException("Pagamento não encontrado"));
@@ -37,11 +39,15 @@ public class PagamentoService {
 
     @Transactional
     public PagamentoResponseDTO salvarPagamento(PagamentoRequestDTO dto) {
+
+        // Verifica se o pedido existe
         Pedido pedido = pedidoRepository.findById(dto.getPedidoId())
                 .orElseThrow(() -> new BusinessException("Pedido não encontrado"));
 
         Pagamento pagamento = new Pagamento();
         pagamento.setFormaPagamento(dto.getFormaPagamento());
+
+        // Define um status padrão caso não seja informado
         pagamento.setStatusPagamento(
                 dto.getStatusPagamento() != null ? dto.getStatusPagamento() : "Pendente"
         );
@@ -59,6 +65,7 @@ public class PagamentoService {
         Pagamento pagamento = repository.findById(id)
                 .orElseThrow(() -> new BusinessException("Pagamento não encontrado"));
 
+        // Busca o pedido informado
         Pedido pedido = pedidoRepository.findById(dto.getPedidoId())
                 .orElseThrow(() -> new BusinessException("Pedido não encontrado"));
 
@@ -81,6 +88,7 @@ public class PagamentoService {
         repository.delete(pagamento);
     }
 
+    // Converte a entidade para DTO de resposta
     private PagamentoResponseDTO toResponse(Pagamento pagamento) {
         PagamentoResponseDTO dto = new PagamentoResponseDTO();
 
