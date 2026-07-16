@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/prg04gustavosouzasales-back-end.iml" filepath="$PROJECT_DIR$/.idea/prg04gustavosouzasales-back-end.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/ultragas-backend.main.iml" filepath="$PROJECT_DIR$/.idea/modules/ultragas-backend.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ultragas-backend.test.iml" filepath="$PROJECT_DIR$/.idea/modules/ultragas-backend.test.iml" />
     </modules>
   </component>
 </project>
