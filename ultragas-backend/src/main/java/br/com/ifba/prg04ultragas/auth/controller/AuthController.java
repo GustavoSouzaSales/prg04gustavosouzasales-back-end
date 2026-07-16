@@ -4,7 +4,9 @@ import br.com.ifba.prg04ultragas.auth.dto.EsqueciSenhaRequestDTO;
 import br.com.ifba.prg04ultragas.auth.dto.GoogleLoginRequestDTO;
 import br.com.ifba.prg04ultragas.auth.dto.LoginRequestDTO;
 import br.com.ifba.prg04ultragas.auth.dto.NovaSenhaRequestDTO;
+import br.com.ifba.prg04ultragas.auth.dto.TokenRecuperacaoResponseDTO;
 import br.com.ifba.prg04ultragas.auth.dto.VerificarCodigoRequestDTO;
+import br.com.ifba.prg04ultragas.auth.dto.VerificarRecuperacaoRequestDTO;
 import br.com.ifba.prg04ultragas.auth.service.AuthService;
 import br.com.ifba.prg04ultragas.usuario.dto.UsuarioRequestDTO;
 import br.com.ifba.prg04ultragas.usuario.dto.UsuarioResponseDTO;
@@ -67,6 +69,13 @@ public class AuthController {
             @RequestBody @Valid EsqueciSenhaRequestDTO dto
     ) {
         service.solicitarRecuperacaoSenha(dto);
+    }
+
+    @PostMapping("/verificar-codigo-recuperacao")
+    public TokenRecuperacaoResponseDTO verificarCodigoRecuperacao(
+            @RequestBody @Valid VerificarRecuperacaoRequestDTO dto
+    ) {
+        return service.verificarCodigoRecuperacao(dto);
     }
 
     @PostMapping("/nova-senha")

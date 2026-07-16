@@ -92,79 +92,76 @@ public class EmailService {
         );
     }
 
-    // Envia o link utilizado na recuperação da senha
-    public void enviarRecuperacaoSenha(String email, String link) {
+    // Envia o código utilizado na recuperação da senha
+    public void enviarCodigoRecuperacao(String email, String codigo) {
 
         String html = """
-                <div style="
-                    max-width: 560px;
-                    margin: auto;
-                    padding: 32px;
-                    font-family: Arial, sans-serif;
-                    background-color: #071b33;
-                    color: #ffffff;
-                    border-radius: 16px;
+            <div style="
+                max-width: 560px;
+                margin: auto;
+                padding: 32px;
+                font-family: Arial, sans-serif;
+                background-color: #071b33;
+                color: #ffffff;
+                border-radius: 16px;
+            ">
+                <h1 style="
+                    color: #00aaff;
+                    margin-bottom: 24px;
                 ">
-                    <h1 style="
-                        color: #00aaff;
-                        margin-bottom: 24px;
-                    ">
-                        Redefinição de senha
-                    </h1>
+                    Recuperação de senha
+                </h1>
 
-                    <p>Olá!</p>
+                <p>Olá!</p>
 
-                    <p>
-                        Recebemos uma solicitação para redefinir
-                        a senha da sua conta Ultragaz.
-                    </p>
+                <p>
+                    Recebemos uma solicitação para redefinir
+                    a senha da sua conta Ultragaz.
+                </p>
 
-                    <p>
-                        Clique no botão abaixo para criar uma nova senha:
-                    </p>
+                <p>
+                    Digite o código abaixo para confirmar sua identidade:
+                </p>
 
-                    <div style="margin: 30px 0;">
-                        <a
-                            href="%s"
-                            style="
-                                display: inline-block;
-                                padding: 14px 24px;
-                                background-color: #008cff;
-                                color: #ffffff;
-                                font-weight: bold;
-                                text-decoration: none;
-                                border-radius: 10px;
-                            "
-                        >
-                            Redefinir minha senha
-                        </a>
-                    </div>
-
-                    <p>
-                        Por segurança, este link expira em
-                        <strong>15 minutos</strong>.
-                    </p>
-
-                    <p style="color: #9bb2ca;">
-                        Caso você não tenha solicitado a redefinição,
-                        ignore esta mensagem.
-                    </p>
-
-                    <hr style="
-                        margin: 28px 0;
-                        border: none;
-                        border-top: 1px solid #23415f;
-                    ">
-
-                    <p style="color: #9bb2ca;">
-                        Equipe Ultragaz
-                    </p>
+                <div style="
+                    margin: 28px 0;
+                    padding: 18px;
+                    text-align: center;
+                    background-color: #0c2948;
+                    border: 1px solid #00aaff;
+                    border-radius: 12px;
+                    font-size: 32px;
+                    font-weight: bold;
+                    letter-spacing: 10px;
+                    color: #00e5b4;
+                ">
+                    %s
                 </div>
-                """.formatted(link);
+
+                <p>
+                    Este código expira em <strong>5 minutos</strong>.
+                </p>
+
+                <p style="color: #9bb2ca;">
+                    Caso você não tenha solicitado a recuperação,
+                    ignore esta mensagem.
+                </p>
+
+                <hr style="
+                    margin: 28px 0;
+                    border: none;
+                    border-top: 1px solid #23415f;
+                ">
+
+                <p style="color: #9bb2ca;">
+                    Equipe Ultragaz
+                </p>
+            </div>
+            """.formatted(codigo);
 
         enviarEmail(
                 email,
-                "Redefinição de senha - Ultragaz",
+                "Código para recuperação de senha - Ultragaz",
                 html
         );
     }

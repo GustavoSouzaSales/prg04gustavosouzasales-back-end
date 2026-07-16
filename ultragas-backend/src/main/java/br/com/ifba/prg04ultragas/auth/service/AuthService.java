@@ -15,6 +15,8 @@ import br.com.ifba.prg04ultragas.auth.dto.EsqueciSenhaRequestDTO;
 import br.com.ifba.prg04ultragas.auth.dto.NovaSenhaRequestDTO;
 import br.com.ifba.prg04ultragas.auth.model.RecuperacaoSenha;
 import br.com.ifba.prg04ultragas.auth.repository.RecuperacaoSenhaRepository;
+import br.com.ifba.prg04ultragas.auth.dto.VerificarRecuperacaoRequestDTO;
+import br.com.ifba.prg04ultragas.auth.dto.TokenRecuperacaoResponseDTO;
 
 import java.util.UUID;
 
@@ -282,7 +284,6 @@ public class AuthService {
 
         return response;
     }
-
     @Transactional
     public void solicitarRecuperacaoSenha(EsqueciSenhaRequestDTO dto) {
 
@@ -291,35 +292,35 @@ public class AuthService {
                         new BusinessException("Este e-mail não está cadastrado.")
                 );
 
-        // Contas do Google não possuem senha local
         if (usuario.getSenha() == null || usuario.getSenha().isBlank()) {
             throw new BusinessException(
                     "Esta conta foi criada com Google. Use o botão Google para entrar."
             );
         }
 
-        // Gera um token único para recuperação
-        String token = UUID.randomUUID().toString();
+        String codigo = gerarCodigo();
 
         RecuperacaoSenha recuperacao = new RecuperacaoSenha();
+
         recuperacao.setEmail(usuario.getEmail());
-        recuperacao.setToken(token);
-        recuperacao.setDataExpiracao(LocalDateTime.now().plusMinutes(15));
+        recuperacao.setCodigo(codigo);
+        recuperacao.setToken(null);
+        recuperacao.setDataExpiracao(
+                LocalDateTime.now().plusMinutes(5)
+        );
+        recuperacao.setVerificado(false);
         recuperacao.setUsado(false);
 
         recuperacaoSenhaRepository.save(recuperacao);
 
-        String link =
-                "http://localhost:5173/nova-senha?token=" + token;
-
-        emailService.enviarRecuperacaoSenha(
+        emailService.enviarCodigoRecuperacao(
                 usuario.getEmail(),
-                link
+                codigo
         );
 
         logService.registrarAuditoria(
                 "SOLICITACAO_RECUPERACAO_SENHA",
-                "Usuário solicitou a recuperação da senha.",
+                "Usuário solicitou a recuperação da senha por código.",
                 "Usuario",
                 usuario.getId(),
                 usuario
@@ -327,19 +328,69 @@ public class AuthService {
     }
 
     @Transactional
+    public TokenRecuperacaoResponseDTO verificarCodigoRecuperacao(
+            VerificarRecuperacaoRequestDTO dto
+    ) {
+
+        RecuperacaoSenha recuperacao = recuperacaoSenhaRepository
+                .findTopByEmailAndCodigoAndUsadoFalseOrderByIdDesc(
+                        dto.getEmail(),
+                        dto.getCodigo()
+                )
+                .orElseThrow(() ->
+                        new BusinessException("Código inválido.")
+                );
+
+        if (recuperacao.getDataExpiracao().isBefore(LocalDateTime.now())) {
+            throw new BusinessException(
+                    "Código expirado. Solicite um novo código."
+            );
+        }
+
+        String token = UUID.randomUUID().toString();
+
+        recuperacao.setToken(token);
+        recuperacao.setVerificado(true);
+        recuperacao.setDataExpiracao(
+                LocalDateTime.now().plusMinutes(15)
+        );
+
+        recuperacaoSenhaRepository.save(recuperacao);
+
+        Usuario usuario = usuarioRepository
+                .findByEmail(recuperacao.getEmail())
+                .orElseThrow(() ->
+                        new BusinessException("Usuário não encontrado.")
+                );
+
+        logService.registrarAuditoria(
+                "VERIFICACAO_RECUPERACAO_SENHA",
+                "Usuário confirmou o código de recuperação de senha.",
+                "Usuario",
+                usuario.getId(),
+                usuario
+        );
+
+        return new TokenRecuperacaoResponseDTO(token);
+    }
+
+    @Transactional
     public void redefinirSenha(NovaSenhaRequestDTO dto) {
 
         RecuperacaoSenha recuperacao = recuperacaoSenhaRepository
-                .findByTokenAndUsadoFalse(dto.getToken())
+                .findByTokenAndVerificadoTrueAndUsadoFalse(dto.getToken())
                 .orElseThrow(() ->
-                        new BusinessException("Link de recuperação inválido ou já utilizado.")
+                        new BusinessException(
+                                "Recuperação inválida ou já utilizada."
+                        )
                 );
 
-        // Verifica se o link ainda é válido
+        // Verifica se o token de recuperação ainda é válido
         if (recuperacao.getDataExpiracao().isBefore(LocalDateTime.now())) {
-            throw new BusinessException("O link de recuperação expirou.");
+            throw new BusinessException(
+                    "A recuperação de senha expirou."
+            );
         }
-
         Usuario usuario = usuarioRepository
                 .findByEmail(recuperacao.getEmail())
                 .orElseThrow(() ->

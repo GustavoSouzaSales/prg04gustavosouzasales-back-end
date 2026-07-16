@@ -9,5 +9,16 @@ import java.util.Optional;
 public interface RecuperacaoSenhaRepository
         extends JpaRepository<RecuperacaoSenha, Long> {
 
-    Optional<RecuperacaoSenha> findByTokenAndUsadoFalse(String token);
+    // Procura o último código válido enviado para o e-mail
+    Optional<RecuperacaoSenha>
+    findTopByEmailAndCodigoAndUsadoFalseOrderByIdDesc(
+            String email,
+            String codigo
+    );
+
+    // Procura um token válido após a verificação do código
+    Optional<RecuperacaoSenha>
+    findByTokenAndVerificadoTrueAndUsadoFalse(
+            String token
+    );
 }

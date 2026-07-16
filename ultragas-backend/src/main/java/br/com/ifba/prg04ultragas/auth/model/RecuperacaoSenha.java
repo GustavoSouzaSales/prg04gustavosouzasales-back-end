@@ -12,15 +12,21 @@ import java.time.LocalDateTime;
 @Setter
 public class RecuperacaoSenha extends PersistenceEntity {
 
-    // Email do usuário que solicitou a recuperação
+    // E-mail do usuário
     private String email;
 
-    // Token único enviado por e-mail
+    // Código enviado para o e-mail
+    private String codigo;
+
+    // Token utilizado apenas após a confirmação do código
     private String token;
 
-    // Data limite para uso do token
+    // Data de expiração
     private LocalDateTime dataExpiracao;
 
-    // Indica se o token já foi utilizado
+    // Código já confirmado?
+    private Boolean verificado;
+
+    // Recuperação já utilizada?
     private Boolean usado;
 }
