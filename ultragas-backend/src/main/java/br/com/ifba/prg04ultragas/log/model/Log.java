@@ -4,6 +4,8 @@ import br.com.ifba.prg04ultragas.infrastructure.model.PersistenceEntity;
 import br.com.ifba.prg04ultragas.usuario.model.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -37,5 +39,6 @@ public class Log extends PersistenceEntity {
     // Usuário responsável pela ação
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = true)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Usuario usuario;
 }
