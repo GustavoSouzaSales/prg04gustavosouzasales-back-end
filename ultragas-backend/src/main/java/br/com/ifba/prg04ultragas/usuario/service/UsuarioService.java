@@ -122,15 +122,18 @@ public class UsuarioService {
                 .orElseThrow(() ->
                         new BusinessException("Usuário não encontrado"));
 
-        // Salva a exclusão no histórico
-        logService.registrarAuditoria(
-                "EXCLUSAO_USUARIO",
-                "Usuário excluído: " + usuario.getEmail(),
-                "Usuario",
-                usuario.getId(),
-                usuario
-        );
+        Long usuarioId = usuario.getId();
+        String usuarioEmail = usuario.getEmail();
 
         repository.delete(usuario);
+        repository.flush();
+
+        logService.registrarAuditoria(
+                "EXCLUSAO_USUARIO",
+                "Usuário excluído: " + usuarioEmail,
+                "Usuario",
+                usuarioId,
+                null
+        );
     }
 }

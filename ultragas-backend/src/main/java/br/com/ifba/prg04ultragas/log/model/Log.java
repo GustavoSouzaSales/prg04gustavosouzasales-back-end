@@ -35,6 +35,6 @@ public class Log extends PersistenceEntity {
 
     // Usuário responsável pela ação
     @ManyToOne
-    @JoinColumn(name = "usuario_id")
+    @JoinColumn(name = "usuario_id", nullable = true)
     private Usuario usuario;
 }
