@@ -19,6 +19,8 @@ public class LogResponseDTO {
 
     private Long entidadeId;
 
+    private String usuarioNome;
+
     private String usuarioEmail;
 
     private String ip;

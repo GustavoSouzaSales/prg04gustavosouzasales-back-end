@@ -47,14 +47,18 @@ public class LogService {
                 .orElseThrow(() -> new BusinessException("Usuário não encontrado"));
 
         Log log = new Log();
+
         log.setAcao(dto.getAcao());
         log.setDescricao(dto.getDescricao());
         log.setEntidade(dto.getEntidade());
         log.setEntidadeId(dto.getEntidadeId());
+
+        log.setUsuarioNome(usuario.getNome());
         log.setUsuarioEmail(usuario.getEmail());
+        log.setUsuario(usuario);
+
         log.setIp(dto.getIp());
         log.setDataHora(LocalDateTime.now());
-        log.setUsuario(usuario);
 
         log = repository.save(log);
 
@@ -78,6 +82,7 @@ public class LogService {
         dto.setDescricao(log.getDescricao());
         dto.setEntidade(log.getEntidade());
         dto.setEntidadeId(log.getEntidadeId());
+        dto.setUsuarioNome(log.getUsuarioNome());
         dto.setUsuarioEmail(log.getUsuarioEmail());
         dto.setIp(log.getIp());
         dto.setDataHora(log.getDataHora());
@@ -109,8 +114,32 @@ public class LogService {
 
         if (usuario != null) {
             log.setUsuario(usuario);
+            log.setUsuarioNome(usuario.getNome());
             log.setUsuarioEmail(usuario.getEmail());
         }
+
+        repository.save(log);
+    }
+
+    @Transactional
+    public void registrarExclusaoUsuario(
+            Long usuarioId,
+            String usuarioNome,
+            String usuarioEmail
+    ) {
+
+        Log log = new Log();
+
+        log.setAcao("EXCLUSAO_USUARIO");
+        log.setDescricao("Usuário excluído: " + usuarioNome);
+        log.setEntidade("Usuario");
+        log.setEntidadeId(usuarioId);
+        log.setDataHora(LocalDateTime.now());
+
+        // Guarda os dados históricos sem criar vínculo com o usuário
+        log.setUsuario(null);
+        log.setUsuarioNome(usuarioNome);
+        log.setUsuarioEmail(usuarioEmail);
 
         repository.save(log);
     }

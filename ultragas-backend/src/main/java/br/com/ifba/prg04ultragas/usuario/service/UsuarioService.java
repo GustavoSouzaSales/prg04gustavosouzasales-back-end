@@ -123,17 +123,16 @@ public class UsuarioService {
                         new BusinessException("Usuário não encontrado"));
 
         Long usuarioId = usuario.getId();
+        String usuarioNome = usuario.getNome();
         String usuarioEmail = usuario.getEmail();
 
         repository.delete(usuario);
         repository.flush();
 
-        logService.registrarAuditoria(
-                "EXCLUSAO_USUARIO",
-                "Usuário excluído: " + usuarioEmail,
-                "Usuario",
+        logService.registrarExclusaoUsuario(
                 usuarioId,
-                null
+                usuarioNome,
+                usuarioEmail
         );
     }
 }

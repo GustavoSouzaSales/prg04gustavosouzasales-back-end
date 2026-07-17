@@ -25,7 +25,8 @@ public class Log extends PersistenceEntity {
 
     private Long entidadeId;
 
-    // Email do usuário que realizou a ação
+    // Email e o nome do usuário que realizou a ação
+    private String usuarioNome;
     private String usuarioEmail;
 
     private String ip;
